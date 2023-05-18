@@ -16,7 +16,7 @@ class RFIDReaderInterface(var listener: IRFIDReaderListener) : RfidEventsListene
     private var readerDevice: ReaderDevice? = null
     lateinit var reader: RFIDReader
 
-    fun connect(context: Context, scanConnectionMode : ScanConnectionEnum): Boolean {
+    fun connect(context: Context): Boolean {
         // Init
         readers = Readers(context, ENUM_TRANSPORT.ALL)
 
@@ -30,7 +30,7 @@ class RFIDReaderInterface(var listener: IRFIDReaderListener) : RfidEventsListene
                     if (!reader!!.isConnected) {
                         Log.d(TAG, "RFID Reader Connecting...")
                         reader!!.connect()
-                        configureReader(scanConnectionMode)
+                        configureReader()
                         Log.d(TAG, "RFID Reader Connected!")
                         return true
                     }
@@ -49,7 +49,7 @@ class RFIDReaderInterface(var listener: IRFIDReaderListener) : RfidEventsListene
         return false
     }
 
-    private fun configureReader(scanConnectionMode : ScanConnectionEnum) {
+    private fun configureReader() {
         if (reader.isConnected) {
             val triggerInfo = TriggerInfo()
             triggerInfo.StartTrigger.triggerType = START_TRIGGER_TYPE.START_TRIGGER_TYPE_IMMEDIATE
@@ -68,14 +68,7 @@ class RFIDReaderInterface(var listener: IRFIDReaderListener) : RfidEventsListene
                 reader.Config.startTrigger = triggerInfo.StartTrigger
                 reader.Config.stopTrigger = triggerInfo.StopTrigger
 
-                // Terminal scan, use trigger for scanning!
-                if(scanConnectionMode == ScanConnectionEnum.TerminalScan)
-                    reader.Config.setKeylayoutType(ENUM_KEYLAYOUT_TYPE.UPPER_TRIGGER_FOR_SCAN)
-                else
-                    reader.Config.setKeylayoutType(ENUM_KEYLAYOUT_TYPE.UPPER_TRIGGER_FOR_SLED_SCAN)
-
-
-
+                reader.Config.setKeylayoutType(ENUM_KEYLAYOUT_TYPE.UPPER_TRIGGER_FOR_SLED_SCAN)
             } catch (e: InvalidUsageException) {
                 e.printStackTrace()
             } catch (e: OperationFailureException) {

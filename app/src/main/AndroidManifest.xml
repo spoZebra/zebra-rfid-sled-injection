@@ -35,6 +35,10 @@
             android:name=".InjectSledDataForegroundService"
             android:enabled="true"
             android:exported="true"></service>
+        <service
+            android:name=".InjectSledDataForegroundService"
+            android:enabled="true"
+            android:exported="true" />
 
         <uses-library android:name="com.symbol.emdk" />
 
