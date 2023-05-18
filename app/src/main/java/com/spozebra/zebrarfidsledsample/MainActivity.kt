@@ -89,6 +89,9 @@ class MainActivity : AppCompatActivity(), IEmdkEngineListener {
 
     private fun parseLogFile(): List<String> {
         val logFile = File(applicationContext.filesDir, "logs/service_logs.txt")
+        if(!logFile.exists())
+            return mutableListOf()
+
         return try {
             logFile.readLines()
         } catch (e: Exception) {
