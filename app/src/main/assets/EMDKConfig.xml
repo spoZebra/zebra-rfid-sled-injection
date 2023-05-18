@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><!--This is an auto generated document. Changes to this document may cause incorrect behavior.--><wap-provisioningdoc>
+  <characteristic type="ProfileInfo">
+    <parm name="created_wizard_version" value="11.0.1"/>
+  </characteristic>
+  <characteristic type="Profile">
+    <parm name="ProfileName" value="ConfigProfile"/>
+    <parm name="ModifiedDate" value="2023-05-18 14:28:24"/>
+    <parm name="TargetSystemVersion" value="8.3"/>
+      
+    <characteristic type="AccessMgr" version="8.3">
+      <parm name="emdk_name" value=""/>
+      <parm name="OperationMode" value="1"/>
+      <parm name="ServiceAccessAction" value="1"/>
+      <parm name="ServiceIdentifier" value="com.zebra.eventinjectionservice"/>
+    </characteristic>
+    <characteristic type="AccessMgr" version="8.3">
+      <parm name="emdk_name" value=""/>
+      <parm name="OperationMode" value="1"/>
+      <parm name="ServiceAccessAction" value="4"/>
+      <parm name="ServiceIdentifier" value="com.zebra.eventinjectionservice"/>
+      <parm name="CallerPackageName" value="com.spozebra.zebrarfidsledsample"/>
+      <parm name="CallerSignature" value="MIIDRzCCAi+gAwIBAgIEQAPPLDANBgkqhkiG9w0BAQsFADBUMQswCQYDVQQGEwJJVDEOMAwGA1UEBxMFTWlsYW4xGzAZBgNVBAoTElplYnJhIFRlY2hub2xvZ2llczEYMBYGA1UEAxMPU2ltb25lIFBvenpvYm9uMB4XDTIzMDQwNDEwMTA1MVoXDTQ4MDMyODEwMTA1MVowVDELMAkGA1UEBhMCSVQxDjAMBgNVBAcTBU1pbGFuMRswGQYDVQQKExJaZWJyYSBUZWNobm9sb2dpZXMxGDAWBgNVBAMTD1NpbW9uZSBQb3p6b2JvbjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAIdz8imMKPqlXOJwSMX1QTtaBfP5K8GRHCf2E3MLNWLOxYN8/PNq6ja8J1EFyh5Swewy5P8pVlPsjRzcKHjTkbYLFIgKFkB/8nouxTadT/18jw95AHo2U2qh2OAPlfm3lucxRmJ/W5cVQQnpsamK8lOnTsGNtWcBfMnbhuY2BJzPe10IEHvtnm0UmbxxPmKOuCC0No5xBncvX5EHeYIYlhnzykMUNRyZA4wuxInGyI4RzE3f8rc0vskud2EKuw4GK31Ad9fhtGKuNp9R9HR1W08fyzVSZb0NOL4f4kZRC1Z45uz2RXDnTKwAotVomsWcmjN9qxRZ4n0vn1EoRZ8TZlkCAwEAAaMhMB8wHQYDVR0OBBYEFGRmcYgHgxNzymM8HMeTbJ13Gz9GMA0GCSqGSIb3DQEBCwUAA4IBAQB/n30LpeV/8S5yXwMC2Fyr082Na+DMFrGBe4gDI/OuW6CN776OdyXB6izc0avIedDNmSzc7efiRdwso+oQIqthPoxyq9mT8mD0sh4N8MtoQ7V2xsdV4kdUrgZuj/PTVcM6MhNMi6EVWQdPjVmsTFu548KVV0BDPZvxv9U/yeuB3ImfDm3k6INl2/iZp9iW0MOHoYtemwqWwpynSRe9UOCy9He4COPMFynzsnovTHyfUqfNdueEYtsPtAFJWhAZK2XHSgisgJjVXBUnfJFUt+SF/O0XOEbxFwJruU/0R6J5htkk4zIiRns9qg8LHtuw53B4V7fqEf2/XPSo7BR7N3A2"/>
+    </characteristic>
+  </characteristic>
+</wap-provisioningdoc>
