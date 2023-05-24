@@ -1,5 +1,5 @@
 # Zebra RFID Sled Injection
-Sample app that starts a foreground service which is capable of injecting externally both tags and barcode read from a Zebra RFID Sled.
+Sample app that starts a foreground service which is capable of injecting into any input field both tags and barcode read from a Zebra RFID Sled.
 
 This injection is possible by using our Zebra Key Injection API (com.zebra.eventinjectionservice) which allows a non-privileged application to mimic key presses and screen movements (touch). 
 Please reach out to Zebra if you want to know more about it - https://developer.zebra.com/
