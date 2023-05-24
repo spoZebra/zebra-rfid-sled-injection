@@ -1,4 +1,4 @@
-package com.spozebra.zebrarfidsledsample.emdk
+package com.spozebra.zebrarfidsledinjection.emdk
 
 
 import android.content.Context

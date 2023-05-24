@@ -1,4 +1,4 @@
-package com.spozebra.zebrarfidsledsample
+package com.spozebra.zebrarfidsledinjection
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -12,10 +12,10 @@ import android.util.Log
 import android.view.KeyEvent
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.spozebra.zebrarfidsledsample.barcode.BarcodeScannerInterface
-import com.spozebra.zebrarfidsledsample.barcode.IBarcodeScannedListener
-import com.spozebra.zebrarfidsledsample.rfid.IRFIDReaderListener
-import com.spozebra.zebrarfidsledsample.rfid.RFIDReaderInterface
+import com.spozebra.zebrarfidsledinjection.barcode.BarcodeScannerInterface
+import com.spozebra.zebrarfidsledinjection.barcode.IBarcodeScannedListener
+import com.spozebra.zebrarfidsledinjection.rfid.IRFIDReaderListener
+import com.spozebra.zebrarfidsledinjection.rfid.RFIDReaderInterface
 import com.zebra.eventinjectionservice.IEventInjectionService
 
 class InjectSledDataForegroundService : Service(), IBarcodeScannedListener, IRFIDReaderListener {
@@ -48,6 +48,7 @@ class InjectSledDataForegroundService : Service(), IBarcodeScannedListener, IRFI
                     log("InjectSledDataForegroundService started")
                     bindEventInjectionService()
                     configureDevice()
+                    log("Ready")
                 } catch (re: Exception) {
                     Log.d(TAG, re.toString())
                 }
@@ -179,8 +180,8 @@ class InjectSledDataForegroundService : Service(), IBarcodeScannedListener, IRFI
     }
 
     companion object {
-        val ACTION_LOG_UPDATED = "com.spozebra.zebrarfidsledsample.ACTION_LOG_UPDATED"
-        val EXTRA_LOG_MESSAGE = "com.spozebra.zebrarfidsledsample.EXTRA_LOG_MESSAGE"
+        val ACTION_LOG_UPDATED = "com.spozebra.zebrarfidsledinjection.ACTION_LOG_UPDATED"
+        val EXTRA_LOG_MESSAGE = "com.spozebra.zebrarfidsledinjection.EXTRA_LOG_MESSAGE"
         private var iEventInjectionService: IEventInjectionService? = null
         private var rfidInterface: RFIDReaderInterface? = null
         private var scannerInterface: BarcodeScannerInterface? = null

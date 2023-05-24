@@ -1,9 +1,7 @@
-package com.spozebra.zebrarfidsledsample.rfid
+package com.spozebra.zebrarfidsledinjection.rfid
 
 import android.content.Context
 import android.util.Log
-import com.spozebra.zebrarfidsledsample.MainActivity
-import com.spozebra.zebrarfidsledsample.ScanConnectionEnum
 import com.zebra.rfid.api3.*
 import java.util.*
 
@@ -83,7 +81,7 @@ class RFIDReaderInterface(var listener: IRFIDReaderListener) : RfidEventsListene
         if (rfidStatusEvents.StatusEventData.statusEventType === STATUS_EVENT_TYPE.HANDHELD_TRIGGER_EVENT) {
             if (rfidStatusEvents.StatusEventData.HandheldTriggerEventData.handheldEvent === HANDHELD_TRIGGER_EVENT_TYPE.HANDHELD_TRIGGER_PRESSED) {
                 try {
-                    reader.Actions.Inventory.perform();
+                    reader.Actions.Inventory.perform()
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }

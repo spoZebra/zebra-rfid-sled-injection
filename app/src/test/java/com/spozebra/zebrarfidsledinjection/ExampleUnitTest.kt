@@ -1,4 +1,4 @@
-package com.spozebra.zebrarfidsledsample
+package com.spozebra.zebrarfidsledinjection
 
 import org.junit.Test
 

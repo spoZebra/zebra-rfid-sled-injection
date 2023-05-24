@@ -1,4 +1,4 @@
-package com.spozebra.zebrarfidsledsample.rfid
+package com.spozebra.zebrarfidsledinjection.rfid
 
 interface IRFIDReaderListener {
     fun newTagRead(epc : String?)

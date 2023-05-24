@@ -1,4 +1,4 @@
-package com.spozebra.zebrarfidsledsample.ssm
+package com.spozebra.zebrarfidsledinjection.ssm
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
@@ -9,7 +9,7 @@ import android.database.Cursor
 import android.net.Uri
 import android.util.Base64
 import android.util.Log
-import com.spozebra.zebrarfidsledsample.Constants
+import com.spozebra.zebrarfidsledinjection.Constants
 import java.nio.charset.StandardCharsets
 
 class ConfigurationManager(context: Context) {

@@ -1,4 +1,4 @@
-package com.spozebra.zebrarfidsledsample
+package com.spozebra.zebrarfidsledinjection
 
 import android.Manifest
 import android.content.*
@@ -10,9 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.spozebra.zebrarfidsledsample.emdk.EmdkEngine
-import com.spozebra.zebrarfidsledsample.emdk.IEmdkEngineListener
-import com.spozebra.zebrarfidsledsample.ssm.ConfigurationManager
+import com.spozebra.zebrarfidsledinjection.emdk.EmdkEngine
+import com.spozebra.zebrarfidsledinjection.emdk.IEmdkEngineListener
+import com.spozebra.zebrarfidsledinjection.ssm.ConfigurationManager
 import com.symbol.emdk.EMDKResults
 
 

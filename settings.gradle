@@ -15,6 +15,6 @@ dependencyResolutionManagement {
         }
     }
 }
-rootProject.name = "ZebraRfidSledSample"
+rootProject.name = "ZebraRfidSledInjection"
 include ':app'
 include ':RFIDAPI3Library'

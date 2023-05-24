@@ -1,8 +1,7 @@
-package com.spozebra.zebrarfidsledsample.barcode
+package com.spozebra.zebrarfidsledinjection.barcode
 
 
 import android.content.Context
-import com.spozebra.zebrarfidsledsample.ScanConnectionEnum
 import com.zebra.rfid.api3.InvalidUsageException
 import com.zebra.rfid.api3.OperationFailureException
 import com.zebra.scannercontrol.*
@@ -20,7 +19,7 @@ class BarcodeScannerInterface(val listener : IBarcodeScannedListener): IDcsSdkAp
         sdkHandler!!.dcssdkSetOperationalMode(DCSSDKDefs.DCSSDK_MODE.DCSSDK_OPMODE_BT_LE)
         sdkHandler!!.dcssdkSetOperationalMode(DCSSDKDefs.DCSSDK_MODE.DCSSDK_OPMODE_USB_CDC)
 
-        sdkHandler!!.dcssdkSetDelegate(this);
+        sdkHandler!!.dcssdkSetDelegate(this)
         var notifications_mask = 0
         notifications_mask = notifications_mask or (DCSSDKDefs.DCSSDK_EVENT.DCSSDK_EVENT_SCANNER_APPEARANCE.value or
                 DCSSDKDefs.DCSSDK_EVENT.DCSSDK_EVENT_SCANNER_DISAPPEARANCE.value)
@@ -41,7 +40,7 @@ class BarcodeScannerInterface(val listener : IBarcodeScannedListener): IDcsSdkAp
                 return true
 
             // Connect
-            var result = sdkHandler!!.dcssdkEstablishCommunicationSession(scanner.scannerID)
+            val result = sdkHandler!!.dcssdkEstablishCommunicationSession(scanner.scannerID)
 
             return result == DCSSDKDefs.DCSSDK_RESULT.DCSSDK_RESULT_SUCCESS
 
