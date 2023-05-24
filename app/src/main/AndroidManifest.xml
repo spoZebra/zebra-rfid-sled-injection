@@ -14,10 +14,8 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <queries>
-        <package android:name="com.zebra.devicemanager" />
-
         <provider android:authorities="com.zebra.securestoragemanager.securecontentprovider" />
-
+        <package android:name="com.zebra.devicemanager" />
         <package android:name="com.symbol.emdk.emdkservice" />
     </queries>
 
@@ -34,14 +32,8 @@
         <service
             android:name=".InjectSledDataForegroundService"
             android:enabled="true"
-            android:exported="true"></service>
-        <service
-            android:name=".InjectSledDataForegroundService"
-            android:enabled="true"
-            android:exported="true" />
-
+            android:exported="true"/>
         <uses-library android:name="com.symbol.emdk" />
-
         <activity
             android:name=".MainActivity"
             android:exported="true">

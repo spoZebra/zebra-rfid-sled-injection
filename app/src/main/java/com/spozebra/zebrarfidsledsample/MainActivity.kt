@@ -14,7 +14,6 @@ import com.spozebra.zebrarfidsledsample.emdk.EmdkEngine
 import com.spozebra.zebrarfidsledsample.emdk.IEmdkEngineListener
 import com.spozebra.zebrarfidsledsample.ssm.ConfigurationManager
 import com.symbol.emdk.EMDKResults
-import java.io.File
 
 
 class MainActivity : AppCompatActivity(), IEmdkEngineListener {
@@ -46,7 +45,6 @@ class MainActivity : AppCompatActivity(), IEmdkEngineListener {
 
         listViewLog = findViewById(R.id.listViewLog)
 
-        logList = parseLogFile() as MutableList<String>
         val tagsLIstAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, logList)
         listViewLog.adapter = tagsLIstAdapter
 
@@ -66,19 +64,8 @@ class MainActivity : AppCompatActivity(), IEmdkEngineListener {
         //Scanner Initializations
         //Handling Runtime BT permissions for Android 12 and higher
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.BLUETOOTH_CONNECT
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(
-                        Manifest.permission.BLUETOOTH_SCAN,
-                        Manifest.permission.BLUETOOTH_CONNECT
-                    ),
-                    BLUETOOTH_PERMISSION_REQUEST_CODE
-                )
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT), BLUETOOTH_PERMISSION_REQUEST_CODE)
             } else {
                 configureDevice()
             }
@@ -87,23 +74,7 @@ class MainActivity : AppCompatActivity(), IEmdkEngineListener {
         }
     }
 
-    private fun parseLogFile(): List<String> {
-        val logFile = File(applicationContext.filesDir, "logs/service_logs.txt")
-        if(!logFile.exists())
-            return mutableListOf()
-
-        return try {
-            logFile.readLines()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            emptyList()
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String?>,
-        grantResults: IntArray
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray
     ) {
         if (requestCode == BLUETOOTH_PERMISSION_REQUEST_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -124,21 +95,20 @@ class MainActivity : AppCompatActivity(), IEmdkEngineListener {
 
     private fun configureDevice(){
         // Init Emdk (static, initialized once).
-        this.emdkEngine = EmdkEngine.getInstance(applicationContext, this);
+        this.emdkEngine = EmdkEngine.getInstance(applicationContext, this)
     }
 
     override fun emdkInitialized() {
         // Check if the access was granted already for this app
         // Configuration Manager uses SSM (Zebra Secure Storage Manager) which is in charge of saving/retrieving app params
-        var isServiceAccessGranted = "false" // TODO, fix SSM implementation...for now let's grant the access everytime
-            //configurationManager.getValue(Constants.IS_SERVICE_ACCESS_GRANTED, "false");
+        var isServiceAccessGranted = configurationManager.getValue(Constants.IS_SERVICE_ACCESS_GRANTED, "false")
 
         if (isServiceAccessGranted == "false") {
             // If not, download the profile which activates the access thru MX
             val result = emdkEngine!!.setProfile(Constants.SERVICE_ACCESS_PROFILE, null)
             if (result!!.extendedStatusCode == EMDKResults.EXTENDED_STATUS_CODE.NONE) {
                 // Access granted, update the permissionsGranted flag
-//                configurationManager.updateValue(Constants.IS_SERVICE_ACCESS_GRANTED, "true")
+                configurationManager.updateValue(Constants.IS_SERVICE_ACCESS_GRANTED, "true")
                 isServiceAccessGranted = "true"
             } else {
                 Log.e(TAG, "Error Granting permissions thru MX")

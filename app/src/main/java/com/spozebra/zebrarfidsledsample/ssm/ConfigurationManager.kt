@@ -25,13 +25,15 @@ class ConfigurationManager(context: Context) {
         APP_SIGNATURE = getPublicSignature(context)
     }
 
+    @Suppress("DEPRECATION")
+    @SuppressLint("PackageManagerGetSignatures")
     private fun getPublicSignature(context: Context): String? {
         var appSignature: String? = null
         try {
             val signature: Signature = context.packageManager.getPackageInfo(
                 context.packageName,
                 PackageManager.GET_SIGNATURES
-            ).signatures.get(0)
+            ).signatures[0]
             if (signature != null) {
                 val data: ByteArray = Base64.encode(signature.toByteArray(), Base64.DEFAULT)
                 val sign = String(data, StandardCharsets.UTF_8)
@@ -59,10 +61,13 @@ class ConfigurationManager(context: Context) {
     }
 
     fun updateValue(paramName: String, value: Any) {
-        val selection = Constants.SSM_TARGET_APP_PACKAGE + "= '" + context.packageName + "'"
-        val values = ContentValues()
-        val createdRow: Int = context.contentResolver
-            .update(cpUri, buildContentValues(paramName, value), null, null)
+        try {
+            Constants.SSM_TARGET_APP_PACKAGE + "= '" + context.packageName + "'"
+            ContentValues()
+            context.contentResolver.update(cpUri, buildContentValues(paramName, value), null, null)
+        } catch (e: Exception){
+            Log.e(TAG, "Error: " + e.message)
+        }
     }
 
     @SuppressLint("Range")
@@ -89,7 +94,7 @@ class ConfigurationManager(context: Context) {
                 }
             }
             // Param does not exists, create it
-            val createdRow: Uri? = context.contentResolver.insert(cpUri, buildContentValues(paramName, defaultValue))
+            context.contentResolver.insert(cpUri, buildContentValues(paramName, defaultValue))
         } catch (e: Exception) {
             Log.e(TAG, "Query data error: " + e.message)
         } finally {

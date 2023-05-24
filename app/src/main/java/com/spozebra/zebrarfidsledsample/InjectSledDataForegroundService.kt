@@ -17,9 +17,6 @@ import com.spozebra.zebrarfidsledsample.barcode.IBarcodeScannedListener
 import com.spozebra.zebrarfidsledsample.rfid.IRFIDReaderListener
 import com.spozebra.zebrarfidsledsample.rfid.RFIDReaderInterface
 import com.zebra.eventinjectionservice.IEventInjectionService
-import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
 
 class InjectSledDataForegroundService : Service(), IBarcodeScannedListener, IRFIDReaderListener {
 
@@ -45,9 +42,18 @@ class InjectSledDataForegroundService : Service(), IBarcodeScannedListener, IRFI
 
         // Start the service in the foreground with the notification
         startForeground(NOTIFICATION_ID, notification)
-        log("InjectSledDataForegroundService started")
-        bindEventInjectionService()
-        configureDevice()
+        val t: Thread = object : Thread() {
+            override fun run() {
+                try {
+                    log("InjectSledDataForegroundService started")
+                    bindEventInjectionService()
+                    configureDevice()
+                } catch (re: Exception) {
+                    Log.d(TAG, re.toString())
+                }
+            }
+        }
+        t.start()
 
         return START_STICKY
     }
@@ -74,7 +80,11 @@ class InjectSledDataForegroundService : Service(), IBarcodeScannedListener, IRFI
         intent.setPackage("com.zebra.eventinjectionservice")
         bindService(intent, mServiceConnection, BIND_AUTO_CREATE)
     }
+
     private fun configureDevice() {
+
+        log("Looking for RFID Sled...")
+
         // CONFIGURE SCANNER
         // Configure BT Scanner
         if (scannerInterface == null) {
@@ -83,9 +93,9 @@ class InjectSledDataForegroundService : Service(), IBarcodeScannedListener, IRFI
 
         var res = scannerInterface!!.connect(applicationContext)
         if(res)
-            log("Scanner connected!")
+            log("Scanner initialized")
         else
-            log("ERROR: Unable to connect scanner")
+            log("ERROR: Unable to initialize sled scanner")
 
         // Configure RFID
         if (rfidInterface == null) {
@@ -94,9 +104,9 @@ class InjectSledDataForegroundService : Service(), IBarcodeScannedListener, IRFI
 
         res = rfidInterface!!.connect(applicationContext)
         if(res)
-            log("RFID connected!")
+            log("RFID initialized")
         else
-            log("ERROR: Unable to connect RFID")
+            log("ERROR: Unable to initialize sled RFID antenna")
     }
 
     private val mServiceConnection: ServiceConnection = object : ServiceConnection {
@@ -111,6 +121,7 @@ class InjectSledDataForegroundService : Service(), IBarcodeScannedListener, IRFI
                     log("ERROR: EventInjectionService caller authentication failed")
                 }
             } catch (re: RemoteException) {
+                log("ERROR: " + re.message)
                 Log.d(TAG, "EXCEPTION")
             }
         }
@@ -120,21 +131,22 @@ class InjectSledDataForegroundService : Service(), IBarcodeScannedListener, IRFI
         }
     }
 
-
     override fun newBarcodeScanned(barcode: String?) {
         log("New barcode scanned: $barcode")
-        type(barcode)
+        injectData(barcode)
     }
 
     override fun newTagRead(epc: String?) {
-        log("New epc scanned: $epc")
-        type(epc)
+        log("New tag collected: $epc")
+        injectData(epc)
     }
 
-    private fun type(characters: String?) {
+    private fun injectData(characters: String?) {
+        // Copy scanned data into device clipboard to be pasted using our event injection service
         val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText("text", characters)
         clipboard.setPrimaryClip(clip)
+        // Paste data
         sendKeyEvent()
     }
 
@@ -142,8 +154,11 @@ class InjectSledDataForegroundService : Service(), IBarcodeScannedListener, IRFI
         val t: Thread = object : Thread() {
             override fun run() {
                 try {
+                    // Inject a PASTE action so that the tag/barcode data will be injected in any field under focus
                     val now = SystemClock.uptimeMillis()
+                    // Press paste
                     iEventInjectionService!!.injectInputEvent(KeyEvent(now, now, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_PASTE, 0), 2)
+                    // Release paste
                     iEventInjectionService!!.injectInputEvent(KeyEvent(now, now, KeyEvent.ACTION_UP, KeyEvent.KEYCODE_PASTE, 0), 2)
                 } catch (re: RemoteException) {
                     Log.d(TAG, re.toString())
@@ -153,33 +168,8 @@ class InjectSledDataForegroundService : Service(), IBarcodeScannedListener, IRFI
         t.start()
     }
 
-    private val logFile: File
-        get() {
-            val logsDir = File(applicationContext.filesDir, "logs")
-            logsDir.mkdirs()
-
-            val logFile = File(logsDir, "service_logs.txt")
-
-            // Delete the existing log file if it exists
-            if (logFile.exists()) {
-                logFile.delete()
-            }
-
-            return logFile
-        }
-
     private fun log(message: String) {
-        val formattedLog = "${SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())}: $message\n"
-        logToFile(formattedLog)
-        broadcastLogUpdate(formattedLog)
-    }
-
-    private fun logToFile(log: String) {
-        try {
-            logFile.appendText(log)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+         broadcastLogUpdate(message)
     }
 
     private fun broadcastLogUpdate(log: String) {
